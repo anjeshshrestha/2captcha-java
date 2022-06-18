@@ -29,11 +29,11 @@
 		</developer>
 	</developers>
 
-    <scm>
+    <!-- <scm>
     <connection>scm:git:git://github.com/2captcha/2captcha-java.git</connection>
     <developerConnection>scm:git:git@github.com:2captcha/2captcha-java.git</developerConnection>
     <url>https://github.com/2captcha/2captcha-java</url>
-    </scm>
+    </scm> -->
 
   <distributionManagement>
     <repository>
@@ -52,11 +52,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>4.7.2</version>
-        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
