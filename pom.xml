@@ -67,6 +67,14 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/java/examples</directory>
+                <excludes>
+                    <exclude>*</exclude>
+                </excludes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -105,8 +113,11 @@
                             <goal>sign</goal>
                         </goals>
                         <configuration>
-                            <keyname>F8F9DA2268324C45C3A46015C273F1F4693E6F11</keyname>
+                            <skip>true</skip>
                         </configuration>
+<!--                        <configuration>-->
+<!--                            <keyname>F8F9DA2268324C45C3A46015C273F1F4693E6F11</keyname>-->
+<!--                        </configuration>-->
                     </execution>
                 </executions>
             </plugin>
