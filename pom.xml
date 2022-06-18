@@ -35,7 +35,7 @@
     <url>https://github.com/2captcha/2captcha-java</url>
     </scm> -->
 
-  <distributionManagement>
+  <!-- <distributionManagement>
     <repository>
       <id>ossrh</id>
       <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
@@ -44,7 +44,7 @@
       <id>ossrh</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
-  </distributionManagement>
+  </distributionManagement> -->
 
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>
