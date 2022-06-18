@@ -1,12 +1,8 @@
 package com.twocaptcha;
 
-import com.twocaptcha.exceptions.ApiException;
-import com.twocaptcha.exceptions.NetworkException;
-import okhttp3.*;
-
-import java.io.File;
-import java.nio.file.Files;
 import java.util.Map;
+import java.io.*;
+import java.net.*;
 
 public class ApiClient {
 
@@ -18,45 +14,44 @@ public class ApiClient {
     /**
      * Network client
      */
-    private final OkHttpClient client = new OkHttpClient();
+    public ApiClient(){
+    }
 
     /**
      * Sends captcha to /in.php
      *
      * @param params
-     * @param files
      * @return
      * @throws Exception
      */
     public String in(Map<String, String> params, Map<String, File> files) throws Exception {
-        HttpUrl.Builder url = new HttpUrl.Builder()
-                .scheme("https")
-                .host(host)
-                .addPathSegment("in.php");
+        String protocol = "https";
+        String path = "/in.php";
+        URL url = new URL(protocol, host, path);
+        HttpURLConnection http = (HttpURLConnection)url.openConnection();
+        http.setRequestMethod("POST"); // PUT is another valid option
+        http.setDoOutput(true);
+        http.setRequestProperty("Content-Type", "text/html");
+        http.setConnectTimeout(5000);
+        http.setReadTimeout(5000);
 
-        RequestBody body;
-
-        if (files.size() == 0) {
-            FormBody.Builder form = new FormBody.Builder();
-            params.forEach(form::add);
-            body = form.build();
-        } else {
-            MultipartBody.Builder form = new MultipartBody.Builder();
-            form.setType(MultipartBody.FORM);
-            params.forEach(form::addFormDataPart);
-            for (Map.Entry<String, File> entry : files.entrySet()) {
-                byte[] fileBytes = Files.readAllBytes(entry.getValue().toPath());
-                form.addFormDataPart(entry.getKey(), entry.getValue().getName(), RequestBody.create(fileBytes));
-            }
-            body = form.build();
+        try(OutputStream os = http.getOutputStream()){
+            byte[] input = ParameterStringBuilder.getParamsString(params).getBytes();
+            os.write(input,0,input.length);
         }
 
-        Request request = new Request.Builder()
-                .url(url.build())
-                .post(body)
-                .build();
+        int code = http.getResponseCode();
+//        System.out.println(code);
 
-        return execute(request);
+        try(BufferedReader br = new BufferedReader(new InputStreamReader(http.getInputStream(), "utf-8"))){
+            StringBuilder response = new StringBuilder();
+            String responseLine = null;
+            while ((responseLine = br.readLine()) != null) {
+                response.append(responseLine.trim());
+            }
+//            System.out.println(response.toString());
+            return response.toString();
+        }
     }
 
     /**
@@ -67,18 +62,52 @@ public class ApiClient {
      * @throws Exception
      */
     public String res(Map<String, String> params) throws Exception {
-        HttpUrl.Builder url = new HttpUrl.Builder()
-                .scheme("https")
-                .host(host)
-                .addPathSegment("res.php");
+        String protocol = "https";
+        String path = "/res.php";
+        URL url = new URL(protocol, host, path);
+        HttpURLConnection http = (HttpURLConnection)url.openConnection();
+        http.setRequestMethod("GET"); // PUT is another valid option
+        http.setDoOutput(true);
+        http.setRequestProperty("Content-Type", "text/html");
+        http.setConnectTimeout(5000);
+        http.setReadTimeout(5000);
 
-        params.forEach(url::addQueryParameter);
+        try(OutputStream os = http.getOutputStream()){
+            byte[] input = ParameterStringBuilder.getParamsString(params).getBytes();
+            os.write(input,0,input.length);
+        }
 
-        Request request = new Request.Builder()
-                .url(url.build())
-                .build();
+        int code = http.getResponseCode();
+//        System.out.println(code);
 
-        return execute(request);
+        try(BufferedReader br = new BufferedReader(new InputStreamReader(http.getInputStream(), "utf-8"))){
+            StringBuilder response = new StringBuilder();
+            String responseLine = null;
+            while ((responseLine = br.readLine()) != null) {
+                response.append(responseLine.trim());
+            }
+//            System.out.println(response.toString());
+            return response.toString();
+        }
+    }
+
+    public static class ParameterStringBuilder {
+        public static String getParamsString(Map<String, String> params)
+                throws UnsupportedEncodingException {
+            StringBuilder result = new StringBuilder();
+
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+                result.append("=");
+                result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+                result.append("&");
+            }
+
+            String resultString = result.toString();
+            return resultString.length() > 0
+                    ? resultString.substring(0, resultString.length() - 1)
+                    : resultString;
+        }
     }
 
     /**
@@ -88,20 +117,5 @@ public class ApiClient {
      * @return
      * @throws Exception
      */
-    private String execute(Request request) throws Exception {
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new NetworkException("Unexpected code " + response);
-            }
-
-            String body = response.body().string();
-
-            if (body.startsWith("ERROR_")) {
-                throw new ApiException(body);
-            }
-
-            return body;
-        }
-    }
 
 }

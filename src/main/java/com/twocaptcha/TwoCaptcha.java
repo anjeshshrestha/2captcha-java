@@ -69,7 +69,7 @@ public class TwoCaptcha {
     /**
      * TwoCaptcha constructor
      *
-     * @param apiKey
+     * @param apiKey api key for 2captcha
      */
     public TwoCaptcha(String apiKey) {
         this();
@@ -77,49 +77,49 @@ public class TwoCaptcha {
     }
 
     /**
-     * @param apiKey
+     * @param apiKey api key for 2captcha
      */
     public void setApiKey(String apiKey) {
         this.apiKey = apiKey;
     }
 
     /**
-     * @param softId
+     * @param softId developer software id for 2captcha
      */
     public void setSoftId(int softId) {
         this.softId = softId;
     }
 
     /**
-     * @param callback
+     * @param callback callback url
      */
     public void setCallback(String callback) {
         this.callback = callback;
     }
 
     /**
-     * @param timeout
+     * @param timeout timeout for captcha
      */
     public void setDefaultTimeout(int timeout) {
         this.defaultTimeout = timeout;
     }
 
     /**
-     * @param timeout
+     * @param timeout timeout for recaptcha
      */
     public void setRecaptchaTimeout(int timeout) {
         this.recaptchaTimeout = timeout;
     }
 
     /**
-     * @param interval
+     * @param interval interval between checks
      */
     public void setPollingInterval(int interval) {
         this.pollingInterval = interval;
     }
 
     /**
-     * @param apiClient
+     * @param apiClient api client
      */
     public void setHttpClient(ApiClient apiClient) {
         this.apiClient = apiClient;
@@ -129,8 +129,8 @@ public class TwoCaptcha {
      * Sends captcha to `/in.php` and waits for it's result.
      * This helper can be used instead of manual using of `send` and `getResult` functions.
      *
-     * @param captcha
-     * @throws Exception
+     * @param captcha captcha
+     * @throws Exception unable to do something
      */
     public void solve(Captcha captcha) throws Exception {
         Map<String, Integer> waitOptions = new HashMap<>();
@@ -146,9 +146,9 @@ public class TwoCaptcha {
      * Sends captcha to `/in.php` and waits for it's result.
      * This helper can be used instead of manual using of `send` and `getResult` functions.
      *
-     * @param captcha
-     * @param waitOptions
-     * @throws Exception
+     * @param captcha captcha to solve
+     * @param waitOptions wait
+     * @throws Exception unable to do something
      */
     public void solve(Captcha captcha, Map<String, Integer> waitOptions) throws Exception {
         captcha.setId(send(captcha));
@@ -157,13 +157,21 @@ public class TwoCaptcha {
             waitForResult(captcha, waitOptions);
         }
     }
+    public void waitForResult(Captcha captcha) throws Exception {
+        Map<String, Integer> waitOptions = new HashMap<>();
+
+        if (captcha instanceof ReCaptcha) {
+            waitOptions.put("timeout", recaptchaTimeout);
+        }
+        waitForResult(captcha, waitOptions);
+    }
 
     /**
      * This helper waits for captcha result, and when result is ready, returns it
      *
-     * @param captcha
-     * @param waitOptions
-     * @throws Exception
+     * @param captcha captcha to wait for result
+     * @param waitOptions wait
+     * @throws Exception unable to do something
      */
     public void waitForResult(Captcha captcha, Map<String, Integer> waitOptions) throws Exception {
         long startedAt = (long)(System.currentTimeMillis() / 1000);
@@ -175,7 +183,7 @@ public class TwoCaptcha {
             long now = (long)(System.currentTimeMillis() / 1000);
 
             if (now - startedAt < timeout) {
-                Thread.sleep(pollingInterval * 1000);
+                Thread.sleep(pollingInterval * 1000L);
             } else {
                 break;
             }
@@ -215,6 +223,8 @@ public class TwoCaptcha {
             throw new ApiException("Cannot recognise api response (" + response + ")");
         }
 
+//        captcha.setId(response.substring(3));
+
         return response.substring(3);
     }
 
@@ -246,8 +256,8 @@ public class TwoCaptcha {
     /**
      * Gets account's balance
      *
-     * @return
-     * @throws Exception
+     * @return balance
+     * @throws Exception unable to parse throw error
      */
     public double balance() throws Exception {
         String response = res("getbalance");
@@ -257,9 +267,9 @@ public class TwoCaptcha {
     /**
      * Reports if captcha was solved correctly (sends `reportbad` or `reportgood` to `/res.php`)
      *
-     * @param id
-     * @param correct
-     * @throws Exception
+     * @param id captcha id
+     * @param correct send report type
+     * @throws Exception unable to report throw error
      */
     public void report(String id, boolean correct) throws Exception {
         Map<String, String> params = new HashMap<>();
@@ -277,9 +287,9 @@ public class TwoCaptcha {
     /**
      * Makes request to `/res.php`
      *
-     * @param action
-     * @return
-     * @throws Exception
+     * @param action action to do
+     * @return result
+     * @throws Exception unable to do something
      */
     private String res(String action) throws Exception {
         Map<String, String> params = new HashMap<>();
@@ -322,12 +332,6 @@ public class TwoCaptcha {
         }
     }
 
-    /**
-     * Validates if files parameters are correct
-     *
-     * @param files
-     * @throws ValidationException
-     */
     private void validateFiles(Map<String, File> files) throws ValidationException {
         for (Map.Entry<String, File> entry : files.entrySet()) {
             File file = entry.getValue();
