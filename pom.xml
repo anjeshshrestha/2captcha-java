@@ -67,15 +67,19 @@
     </dependencies>
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/java/examples</directory>
-                <excludes>
-                    <exclude>*</exclude>
-                </excludes>
-            </resource>
-        </resources>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/examples/**</exclude>
+                        <exclude>*.jpg</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
             <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
@@ -89,18 +93,18 @@
             </executions>
             </plugin>
 
-            <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <executions>
-                <execution>
-                <id>attach-javadocs</id>
-                <goals>
-                    <goal>jar</goal>
-                </goals>
-                </execution>
-            </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--            <groupId>org.apache.maven.plugins</groupId>-->
+<!--            <artifactId>maven-javadoc-plugin</artifactId>-->
+<!--            <executions>-->
+<!--                <execution>-->
+<!--                <id>attach-javadocs</id>-->
+<!--                <goals>-->
+<!--                    <goal>jar</goal>-->
+<!--                </goals>-->
+<!--                </execution>-->
+<!--            </executions>-->
+<!--            </plugin>-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
