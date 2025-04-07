@@ -29,18 +29,22 @@
         </developer>
     </developers>
 
-    <scm>
-        <connection>scm:git:git://github.com/2captcha/2captcha-java.git</connection>
-        <developerConnection>scm:git:git@github.com:2captcha/2captcha-java.git</developerConnection>
-        <url>https://github.com/2captcha/2captcha-java</url>
-    </scm>
+    <!-- <scm>
+    <connection>scm:git:git://github.com/2captcha/2captcha-java.git</connection>
+    <developerConnection>scm:git:git@github.com:2captcha/2captcha-java.git</developerConnection>
+    <url>https://github.com/2captcha/2captcha-java</url>
+    </scm> -->
 
-    <distributionManagement>
-        <repository>
-            <id>central</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
+  <!-- <distributionManagement>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+    </repository>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement> -->
 
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -53,12 +57,6 @@
             <artifactId>json</artifactId>
             <version>20240303</version>
         </dependency>
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>4.7.2</version>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.1</version>
@@ -75,53 +73,42 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.sonatype.central</groupId>
-                <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.6.0</version>
-                <extensions>true</extensions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.2</version>
                 <configuration>
-                    <publishingServerId>central</publishingServerId>
-                    <serverId>central</serverId>
+                    <excludes>
+                        <exclude>**/examples/**</exclude>
+                        <exclude>*.jpg</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
 
             <plugin>
-                <groupId>org.simplify4u.plugins</groupId>
-                <artifactId>sign-maven-plugin</artifactId>
-                <version>1.1.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+                <execution>
+                <id>attach-sources</id>
+                <goals>
+                    <goal>jar-no-fork</goal>
+                </goals>
+                </execution>
+            </executions>
             </plugin>
 
+<!--            <plugin>-->
+<!--            <groupId>org.apache.maven.plugins</groupId>-->
+<!--            <artifactId>maven-javadoc-plugin</artifactId>-->
+<!--            <executions>-->
+<!--                <execution>-->
+<!--                <id>attach-javadocs</id>-->
+<!--                <goals>-->
+<!--                    <goal>jar</goal>-->
+<!--                </goals>-->
+<!--                </execution>-->
+<!--            </executions>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
@@ -133,6 +120,12 @@
                         <goals>
                             <goal>sign</goal>
                         </goals>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+<!--                        <configuration>-->
+<!--                            <keyname>F8F9DA2268324C45C3A46015C273F1F4693E6F11</keyname>-->
+<!--                        </configuration>-->
                     </execution>
                 </executions>
                 <configuration>
