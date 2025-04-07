@@ -9,7 +9,7 @@ public class ApiClient {
     /**
      * API server
      */
-    private final String host = "2captcha.com";
+    public String host = "2captcha.com";
 
     /**
      * Network client
@@ -118,4 +118,10 @@ public class ApiClient {
      * @throws Exception
      */
 
+    /**
+     * @param domain
+     */
+    public void setHost(String domain) {
+        this.host = domain;
+    }
 }

@@ -1,16 +1,16 @@
 package examples;
 
 import com.twocaptcha.TwoCaptcha;
-import com.twocaptcha.captcha.HCaptcha;
+import com.twocaptcha.captcha.Yandex;
 
-public class HCaptchaExample {
+public class YandexExample {
 
     public static void main(String[] args) {
-        TwoCaptcha solver = new TwoCaptcha("YOUR_API_KEY");
+        TwoCaptcha solver = new TwoCaptcha(args[0]);
 
-        HCaptcha captcha = new HCaptcha();
-        captcha.setSiteKey("10000000-ffff-ffff-ffff-000000000001");
-        captcha.setUrl("https://www.site.com/page/");
+        Yandex captcha = new Yandex();
+        captcha.setSiteKey("Y5Lh0tiycconMJGsFd3EbbuNKSp1yaZESUOIHfeV");
+        captcha.setUrl("https://rutube.ru");
 
         try {
             solver.solve(captcha);

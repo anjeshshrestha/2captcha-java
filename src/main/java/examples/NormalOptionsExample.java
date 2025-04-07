@@ -7,8 +7,13 @@ import com.twocaptcha.captcha.Normal;
 public class NormalOptionsExample {
 
     public static void main(String[] args) {
-        TwoCaptcha solver = new TwoCaptcha("YOUR_API_KEY");
-
+        TwoCaptcha solver = new TwoCaptcha(args[0]);
+        solver.setHost("rucaptcha.com");
+        solver.setSoftId(0);
+        solver.setDefaultTimeout(120);
+        solver.setRecaptchaTimeout(600);
+        solver.setPollingInterval(10);
+        
         Normal captcha = new Normal();
         captcha.setFile("src/main/resources/normal_2.jpg");
         captcha.setNumeric(4);

@@ -7,8 +7,13 @@ import com.twocaptcha.captcha.Coordinates;
 public class CoordinatesOptionsExample {
 
     public static void main(String[] args) {
-        TwoCaptcha solver = new TwoCaptcha("YOUR_API_KEY");
-
+        TwoCaptcha solver = new TwoCaptcha(args[0]);
+        solver.setHost("rucaptcha.com");
+        solver.setSoftId(0);
+        solver.setDefaultTimeout(120);
+        solver.setRecaptchaTimeout(600);
+        solver.setPollingInterval(10);
+        
         Coordinates captcha = new Coordinates();
         captcha.setFile("src/main/resources/grid_2.jpg");
         captcha.setLang("en");

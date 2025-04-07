@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.2captcha</groupId>
     <artifactId>2captcha-java</artifactId>
-    <version>1.0.2</version>
+    <version>1.3.1</version>
 
     <name>2captcha-java</name>
-    <description>Java library for easy integration with the API of 2captcha captcha solving service to bypass recaptcha, hcaptcha, funcaptcha, geetest and solve any other captchas.</description>
+    <description>Java library for easy integration with the API of 2captcha captcha solving service to bypass recaptcha, funcaptcha, geetest and solve any other captchas.</description>
     <url>https://2captcha.com/</url>
 
-	<licenses>
-		<license>
-			<name>MIT License</name>
-			<url>http://www.opensource.org/licenses/mit-license.php</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
-	<developers>
-		<developer>
-			<email>info@2captcha.com</email>
-			<name>2captcha</name>
-			<url>https://github.com/2captcha</url>
-			<id>2captcha</id>
-		</developer>
-	</developers>
+    <developers>
+        <developer>
+            <email>info@2captcha.com</email>
+            <name>2captcha</name>
+            <url>https://github.com/2captcha</url>
+            <id>2captcha</id>
+        </developer>
+    </developers>
 
     <!-- <scm>
     <connection>scm:git:git://github.com/2captcha/2captcha-java.git</connection>
@@ -53,6 +53,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20240303</version>
+        </dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.1</version>
@@ -105,10 +109,10 @@
 <!--                </execution>-->
 <!--            </executions>-->
 <!--            </plugin>-->
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
@@ -124,8 +128,14 @@
 <!--                        </configuration>-->
                     </execution>
                 </executions>
+                <configuration>
+                    <passphraseServerId>gpg.passphrase</passphraseServerId>
+                    <gpgArguments>
+                        <arg>--pinentry-mode</arg>
+                        <arg>loopback</arg>
+                    </gpgArguments>
+                </configuration>
             </plugin>
-
         </plugins>
     </build>
 </project>

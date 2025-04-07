@@ -24,6 +24,8 @@ public class CanvasTest extends AbstractWrapperTestCase {
         params.put("recaptcha", "1");
         params.put("canvas", "1");
         params.put("textinstructions", hintText);
+        params.put("soft_id", "4581");
+        params.put("json", "0");
 
         Map<String, File> files = new HashMap<>();
         files.put("file", image);
@@ -42,6 +44,8 @@ public class CanvasTest extends AbstractWrapperTestCase {
         params.put("canvas", "1");
         params.put("body", "...");
         params.put("textinstructions", hintText);
+        params.put("soft_id", "4581");
+        params.put("json", "0");
 
         checkIfCorrectParamsSendAndResultReturned(captcha, params);
     }
@@ -66,6 +70,8 @@ public class CanvasTest extends AbstractWrapperTestCase {
         params.put("can_no_answer", "0");
         params.put("lang", "en");
         params.put("textinstructions", hintText);
+        params.put("soft_id", "4581");
+        params.put("json", "0");
 
         Map<String, File> files = new HashMap<>();
         files.put("file", image);

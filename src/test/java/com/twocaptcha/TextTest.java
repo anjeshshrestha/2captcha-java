@@ -15,6 +15,8 @@ public class TextTest extends AbstractWrapperTestCase {
         Map<String, String> params = new HashMap<>();
         params.put("method", "post");
         params.put("textcaptcha", question);
+        params.put("soft_id", "4581");
+        params.put("json", "0");
 
         checkIfCorrectParamsSendAndResultReturned(captcha, params);
     }
@@ -26,6 +28,8 @@ public class TextTest extends AbstractWrapperTestCase {
         Map<String, String> params = new HashMap<>();
         params.put("method", "post");
         params.put("textcaptcha", question);
+        params.put("soft_id", "4581");
+        params.put("json", "0");
 
         checkIfCorrectParamsSendAndResultReturned(captcha, params);
     }
@@ -39,8 +43,9 @@ public class TextTest extends AbstractWrapperTestCase {
         params.put("method", "post");
         params.put("textcaptcha", question);
         params.put("lang", "en");
+        params.put("soft_id", "4581");
+        params.put("json", "0");
 
         checkIfCorrectParamsSendAndResultReturned(captcha, params);
     }
-
 }
